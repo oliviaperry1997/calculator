@@ -1,0 +1,32 @@
+#calculator {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+#display {
+    text-align: right;
+}
+
+#buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: space-between;
+}
+
+.calcRow {
+    display: flex;
+    flex: 1;
+    gap: 4px;
+    justify-content: center;
+}
+
+.calcButton {
+    flex: 0 0 calc(25% - 2px);
+    box-sizing: border-box;
+}
+
+#zero, #equals, #clear {
+    flex: 0 0 calc(50% - 2px);
+}
