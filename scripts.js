@@ -3,7 +3,7 @@ let num2;
 let operator;
 
 function add(a,b) {
-    return a+b;
+    return +a + +b;
 };
 
 function subtract(a,b) {
@@ -56,6 +56,16 @@ function numberButton(num) {
     }
 }
 
+function decimalButton() {
+    const currentDisplay = display.textContent;
+    
+    if (currentDisplay === '' || currentDisplay === '0') {
+        display.textContent = '0.';
+    } else if (!currentDisplay.includes('.')) {
+        display.textContent += '.';
+    }
+}
+
 zero.addEventListener("click", () => numberButton ('0'));
 one.addEventListener("click", () => numberButton ('1'));
 two.addEventListener("click", () => numberButton ('2'));
@@ -66,3 +76,31 @@ six.addEventListener("click", () => numberButton ('6'));
 seven.addEventListener("click", () => numberButton ('7'));
 eight.addEventListener("click", () => numberButton ('8'));
 nine.addEventListener("click", () => numberButton ('9'));
+decimal.addEventListener("click", decimalButton);
+
+plus.addEventListener("click", () => {
+    operator = '+';
+    num1 = display.textContent;
+});
+minus.addEventListener("click", () => {
+    operator = '-';
+    num1 = display.textContent;
+});
+times.addEventListener("click", () => {
+    operator = '*';
+    num1 = display.textContent;
+});
+slash.addEventListener("click", () => {
+    operator = '/'
+    num1 = display.textContent;
+});
+equals.addEventListener("click", () => {
+    num2 = display.textContent;
+    display.textContent = operate(num1, operator, num2);
+});
+clear.addEventListener("click", () => {
+    display.textContent = '0';
+    num1 = null;
+    num2 = null;
+    operator = null;
+});
