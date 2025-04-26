@@ -111,7 +111,9 @@ function handleEquals() {
 
     num2 = display.textContent;
     const result = operate(num1, operator, num2);
-    display.textContent = parseFloat(result.toFixed(6));
+    if (typeof result === 'number') {
+        display.textContent = parseFloat(result.toFixed(6))
+    } else {display.textContent = result};
     num1 = result;
     operator = null;
     shouldResetDisplay = true;
