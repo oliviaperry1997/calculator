@@ -1,6 +1,7 @@
-let num1;
-let num2;
-let operator;
+let num1 = null;
+let num2 = null;
+let operator = null;
+let shouldResetDisplay = false;
 
 function add(a,b) {
     return +a + +b;
@@ -15,6 +16,7 @@ function multiply(a,b) {
 }
 
 function divide(a,b) {
+    if (b === '0') {return "you fool. you absolute buffoon. you think you can challenge me in my own realm? you think you can rebel against my authority? you dare come into my house and upturn my dining chairs and spill coffee grinds in my Keurig? you thought you were safe in your chain mail armor behind that screen of yours. I will take these laminate wood floor boards and destroy you. I didn't want war, but I didn't start it."};
     return a/b;
 }
 
@@ -49,8 +51,9 @@ const equals = document.querySelector('#equals');
 const clear = document.querySelector('#clear');
 
 function numberButton(num) {
-    if (display.textContent === '0') {
-        display.textContent = num;  // replace '0' with the number
+    if (shouldResetDisplay || display.textContent === '0') {
+        display.textContent = num;
+        shouldResetDisplay = false;  // replace '0' with the number
     } else {
         display.textContent += num;
     }
@@ -78,29 +81,52 @@ eight.addEventListener("click", () => numberButton ('8'));
 nine.addEventListener("click", () => numberButton ('9'));
 decimal.addEventListener("click", decimalButton);
 
-plus.addEventListener("click", () => {
-    operator = '+';
-    num1 = display.textContent;
-});
-minus.addEventListener("click", () => {
-    operator = '-';
-    num1 = display.textContent;
-});
-times.addEventListener("click", () => {
-    operator = '*';
-    num1 = display.textContent;
-});
-slash.addEventListener("click", () => {
-    operator = '/'
-    num1 = display.textContent;
-});
-equals.addEventListener("click", () => {
+function resetDisplay() {
+    display.textContent = '0';
+    shouldResetDisplay = false;
+};
+
+function handleOperator(op) {
+    if (display.textContent === '0' && num1 === null) {return};
+
+    if (shouldResetDisplay) {
+        operator = op;
+        return;
+    }
+
+    if (num1 === null) {
+        num1 = display.textContent;
+    } else {
+        num2 = display.textContent;
+        num1 = operate(num1, operator, num2);
+        display.textContent = num1;
+    }
+
+    operator = op;
+    shouldResetDisplay = true;
+}
+
+function handleEquals() {
+    if (operator === null || num1 === null) return;
+
     num2 = display.textContent;
-    display.textContent = operate(num1, operator, num2);
-});
+    const result = operate(num1, operator, num2);
+    display.textContent = parseFloat(result.toFixed(6));
+    num1 = result;
+    operator = null;
+    shouldResetDisplay = true;
+}
+
+plus.addEventListener("click",() => handleOperator('+'));
+minus.addEventListener("click", () => handleOperator('-'));
+times.addEventListener("click", () => handleOperator('*'));
+slash.addEventListener("click", () => handleOperator('/'));
+equals.addEventListener("click", handleEquals);
+
 clear.addEventListener("click", () => {
     display.textContent = '0';
     num1 = null;
     num2 = null;
     operator = null;
+    shouldResetDisplay = false;
 });
